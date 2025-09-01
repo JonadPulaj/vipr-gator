@@ -24,4 +24,4 @@ the algorithmic correcteness of the proposed checker.
 - If you want to replay the proof provided here you will
   need Z3, Z3 (noBV), CVC5, CVC5 (strings), and
   Alt-Ergo (BV). See session file for more specifics. Time limits may need to be 
-  re-adjusted based on your machine set-up. 
+  adjusted based on your machine set-up. 
