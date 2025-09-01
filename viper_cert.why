@@ -58,6 +58,7 @@ theory VIPRCertificate
   
   function sign_to_int (s: sign) : int
 
+  (* Def. 1 in paper *)
   axiom sign_to_int_def:
   forall s: sign.
     (s = Leq -> sign_to_int s = -1) /\
@@ -219,7 +220,8 @@ theory VIPRHelpers
     }
   function get_constraint (cert: certificate) (k: int) : constraint =  
     if Int.(<) k m then cert.cCON[k] else cert.cDER[Int.(-) k m].con 
-    
+
+   (* predicate for Def. 2 in paper *)
   predicate is_absurdity (con: constraint) =
     (forall i: int. in_range i n -> con.a[i] = 0.0) /\
     match con.s with
