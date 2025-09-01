@@ -296,7 +296,8 @@ theory VIPRHelpers
     | SNone -> false
     | Sign sign -> rnd_con_dom_con cert { a = c1.lhs; b = c1.rhs; s = sign } c2
     end
-  
+
+  (* predicate for Def. 3 in our paper *)
   predicate is_disjunction (cert: certificate) (c1: constraint) (c2: constraint) =
     (forall k: int. in_range k n -> c1.a[k] = c2.a[k]) /\ (forall i. in_range i n -> 
     if mem i cert.cINT then is_integer c1.a[i] else c1.a[i] = 0.0) /\
