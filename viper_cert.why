@@ -134,7 +134,7 @@ theory VIPRCertificate
     \/ (r = Uns /\ (exists arr. rd = D_uns arr /\ Array.length arr = 4 
     /\ (forall i:int. in_range i 4 -> in_range arr[i] d ))) 
   
-  
+  (* Def 8 in paper *)
   type derived_constraint = {
     con: constraint;
     rsn: reason;
@@ -173,7 +173,7 @@ theory VIPRCertificate
     let dc = cert.cDER[j] in
     dc.rsn = Asm
  
-  (* check all dimensions and all other requirements *) 
+  (* pred. for Def. 9 in paper *) 
   predicate is_cert (cert: certificate) =
     (forall i: int. mem i cert.cINT -> in_range i n) /\
     (is_objective_function cert.cOBJ) /\
@@ -221,7 +221,7 @@ theory VIPRHelpers
   function get_constraint (cert: certificate) (k: int) : constraint =  
     if Int.(<) k m then cert.cCON[k] else cert.cDER[Int.(-) k m].con 
 
-   (* predicate for Def. 2 in paper *)
+   (* pred. for Def. 2 in paper *)
   predicate is_absurdity (con: constraint) =
     (forall i: int. in_range i n -> con.a[i] = 0.0) /\
     match con.s with
@@ -230,7 +230,7 @@ theory VIPRHelpers
     | Eq -> con.b <> 0.0
     end
     
-    
+   (* pred. for Def. 3 in paper *) 
   predicate con_dom_con (c1: constraint) (c2: constraint) = 
     is_absurdity c1 \/
      ( 
@@ -252,7 +252,7 @@ theory VIPRHelpers
   (* helper can be ignored *)
   predicate is_gen_con_test (gc: generalized_constraint) = Array.length gc.lhs = n
               
-  
+   (* funct. for Def. 6 in paper *)
   function get_lin_comb (*Below: length weights = d *)
     (cert: certificate) (weights: array real) : generalized_constraint =
     {
@@ -279,7 +279,8 @@ theory VIPRHelpers
     con.s <> Eq /\
     forall i. in_range i n -> 
       if mem i cert.cINT then is_integer con.a[i] else con.a[i] = 0.0 
-  
+
+  (* funct. for Def. 5 in paper *)
   function rnd (cert: certificate) (con: constraint) : constraint = 
     if not roundable cert con then con else
       match con.s with
@@ -297,7 +298,7 @@ theory VIPRHelpers
     | Sign sign -> rnd_con_dom_con cert { a = c1.lhs; b = c1.rhs; s = sign } c2
     end
 
-  (* predicate for Def. 3 in our paper *)
+  (* pred. for Def. 4 in paper *)
   predicate is_disjunction (cert: certificate) (c1: constraint) (c2: constraint) =
     (forall k: int. in_range k n -> c1.a[k] = c2.a[k]) /\ (forall i. in_range i n -> 
     if mem i cert.cINT then is_integer c1.a[i] else c1.a[i] = 0.0) /\
@@ -329,7 +330,8 @@ theory VIPRValidity
     forall sol: (array real). mem sol cert.cSOL -> 
       (forall j: int. mem j cert.cINT -> is_integer sol[j]) /\
       (forall i: int. in_range i m -> sat_constraint sol cert.cCON[i])
-  
+
+  (* pred. for Der. 11 in paper *)
   predicate valid_SOL (cert: certificate) = 
     match cert.cRTP with
     | Infeasible -> is_empty cert.cSOL
@@ -372,7 +374,8 @@ theory VIPRValidity
     | Sol, D_none -> is_empty dc.a_set
     | _, _ -> false
     end  
-    
+
+   (* pred. for Def. 10 in paper *)
    predicate valid_DER_k (cert: certificate) (k: int) =
     let dc = cert.cDER[k] in
     let total_k = Int.(+) k m in
@@ -409,8 +412,9 @@ theory VIPRValidity
     
     | _, _ -> false
     end 
-  
-  predicate valid_DER (cert: certificate) = 
+
+   (* pred. for Def. 12 in paper *)
+   predicate valid_DER (cert: certificate) = 
     (forall k: int. in_range k (Int.(-) d m) -> valid_DER_k cert k) /\
     let d_index = Int.(-) d 1 in
     let cd = get_constraint cert d_index
@@ -430,7 +434,8 @@ theory VIPRValidity
          forall j: int. not is_asm_of cert j d_index
       end
     end
-  
+
+  (* pred. for Def. 13 in paper *)
   predicate valid (cert: certificate) = valid_SOL cert /\ valid_DER cert
 
 end
@@ -464,7 +469,7 @@ theory VIPRPredicate
     end
   
   predicate pub (cert: certificate) =
-  (exists i: interval. cert.cRTP = Interval i /\ 
+    (exists i: interval. cert.cRTP = Interval i /\ 
     (exists r: real. i.ub = UNum r))
   
   function u (cert: certificate) : real =
@@ -478,7 +483,7 @@ theory VIPRPredicate
     end
       
   predicate plb (cert: certificate) =
-  (exists i: interval. cert.cRTP = Interval i /\
+    (exists i: interval. cert.cRTP = Interval i /\
     (exists r: real. i.lb = LNum r))
   
   function l (cert: certificate) : real =
@@ -491,8 +496,8 @@ theory VIPRPredicate
     | Infeasible -> 0.0
     end
   
-  predicate phi_FEAS (cert: certificate) = 
-    forall sol: (array real). mem sol cert.cSOL -> 
+predicate phi_FEAS (cert: certificate) = 
+forall sol: (array real). mem sol cert.cSOL -> 
       (forall j: int. mem j cert.cINT -> is_integer sol[j]) /\
       (forall i: int. in_range i m -> 
         (Int.(>=) (sign_to_int cert.cCON[i].s) 0 -> dot cert.cCON[i].a sol >= cert.cCON[i].b) /\
