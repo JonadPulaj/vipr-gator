@@ -2,6 +2,7 @@
 
 A [Why3](https://www.why3.org/) formalization of the VIPR certificate checker from the paper [*“SMT for Verifying MILP Certificates”*](https://arxiv.org/pdf/2312.10420). 
 
+**Formalization Summary.**
 The development formalizes VIPR certificates and their rules (feasibility, domination, rounding, disjunction/unsplitting, and per-reason derivations), and defines **semantic** (`valid_*`) and **proof-oriented** (`phi_*`) predicates that we prove **equivalent**. Our main theorem shows that for any well-formed certificate (`is_cert`), `valid cert ↔ phi cert`. 
 
 **Scope.** 
@@ -25,7 +26,7 @@ This formalization closely follows the proofs in the paper: informal arguments a
 - **`viper_cert_trimmed.mlw`** — pretty print version, no helper predicates/lemmas.
 
 **Readability & surveyability.**
-`viper_cert.why` contains ~100 lemmas; ~90 are helper lemmas to guide [Why3](https://www.why3.org/) and can be skimmed, or ignored. For an overview, use `viper_cert_trimmed.mlw` which omits the ignorable glue.
+`viper_cert.why` contains ~100 lemmas; ~90 are helper lemmas to guide [Why3](https://www.why3.org/) and can be skimmed, or ignored. To ease reading, `viper_cert_trimmed.mlw` elides most auxiliary lemmas. In `viper_cert.why`, the main lemmas are marked with conspicuous comments.
 
 ### Environment & Reproducibility
 
@@ -36,15 +37,22 @@ Known-good setup:
 - Provers: Alt-Ergo 2.5.4, Alt-Ergo 2.5.4 (BV), CVC5 1.3.0, CVC5 1.3.0 (strings), Z3 4.15.2 (noBV)
 - Machine: MacBook Pro, Apple M1 Max, 64 GB RAM, macOS Sequoia 15.5
 
-Check your setup:
+Check your setup, get the repo and replay proof (troubleshooting if needed):
 ```bash
 why3 --version
 why3 config list-provers
-alt-ergo --version
-cvc5 --version
-z3 --version
-```
 
+# Clone and enter the repo
+git clone https://github.com/JonadPulaj/vipr-gator vipr-gator
+cd vipr-gator
+
+# Replay all proofs deterministically
+why3 replay why3session.xml
+
+# (If something fails in your environment)
+why3 ide viper_cert.why
+
+```
 **Proof automation.**  
 All goals are proved and fully replayable. Proofs are **semi-automatic**: most obligations close after standard [Why3 transformations](https://www.why3.org/doc/technical.html) (e.g., `unfold`, `split_goal_full`/`split_all_full`/`split_goal_right`, and occasional `clear_but`, `introduce_premises`, `induction`), after which SMT backends (Alt-Ergo, CVC5, Z3) discharge the resulting subgoals. All the applied transformations and solver calls are fully captured in `why3session.xml`, so `why3 replay why3session.xml` reproduces everything deterministically.
 > Note: keep `why3session.xml` and `why3shapes.gz` in the same directory to correctly replay the proof. If in your current set-up running `why3 replay why3session.xml` fails to discharge all proof obligations you can launch the Why3 GUI by running `why3 ide viper_cert.why`. Then readjust time limits and manually replay the proof by relying on `why3session.html` for guidance on helpful transformations for failing goals.
