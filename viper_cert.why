@@ -778,7 +778,7 @@ theory Main
     cert.cDER[k].rsn = Asm ->
     cert.cDER[k].data = D_none
 
- (*********************************Lemma 3 in paper **************************************)
+ (*********************************Lemma 3 in paper *************************************)
 
   lemma LemmaASM:
   forall cert: certificate, k: int.
@@ -786,16 +786,16 @@ theory Main
     cert.cDER[k].rsn = Asm ->
     valid_DER_k cert k <-> phi_DER_k cert k
     
- (****************************************************************************************)
+ (***************************************************************************************)
 
-(********************************Lemma 6 in paper ***************************************)
+ (*******************************Lemma 6 in paper ***************************************)
  
   lemma LemmaDOM:
   forall c1 c2: constraint.
     (is_constraint c1 /\ is_constraint c2) ->
     (con_dom_con c1 c2 <-> phi_DOM_constr c1 c2) 
     
- (*******************************************************************************************)
+ (***************************************************************************************)
  
                                 (*helper lemmas*)
   lemma Lin_Next_Check:
@@ -916,7 +916,7 @@ theory Main
     phi_DER_k cert k -> valid_DER_k cert k
    
      
-(**************************************** Lemma 7 in paper ****************************************)
+ (**************************************** Lemma 7 in paper ***************************************)
 
   lemma LemmaLin:
   forall cert: certificate, k: int.
@@ -925,7 +925,7 @@ theory Main
     (forall j: int. 0 <= j < k -> valid_DER_k cert j) ->
     phi_DER_k cert k <-> valid_DER_k cert k
      
-  (************************************* Lemma 8 in paper ******************************************)   
+  (************************************* Lemma 8 in paper *****************************************)   
 
   lemma LemmaRND_Predicate:
   forall cert: certificate, con: constraint.
