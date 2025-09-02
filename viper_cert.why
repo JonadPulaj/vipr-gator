@@ -683,7 +683,6 @@ theory Main
   use array.Array
   use set.Set
   use array.ArrayEq
-  use int.Lex2
   use real.Real
   use real.RealInfix
   use real.Abs
