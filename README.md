@@ -23,20 +23,6 @@ This formalization closely follows the proofs in the paper: informal arguments a
 - **`why3session.html`** — HTML rendering of Why3 session.
 - **`why3shapes.gz`** — shape information to keep session mapping stable.
 
-**Proof automation.**  
-All goals are proved and fully replayable. Proofs are **semi-automatic**: most obligations close after standard Why3 transformations (e.g., `unfold`, `split_goal_full`/`split_all_full`, and occasional `clear_but`), after which SMT backends (Alt-Ergo, CVC5, Z3) discharge the resulting subgoals. The applied transformations and solver calls are recorded in `why3session.xml`, so `why3 replay` reproduces everything deterministically.
-
-**Provers session statistics** (attempts, successes, and time in seconds):
-
-| Prover                   | Attempts | Successes | Min (s) | Max (s) | Avg (s) |
-|--------------------------|:--------:|:---------:|--------:|--------:|--------:|
-| Alt-Ergo 2.5.4           |   147    |    147    |   0.01  |  81.61  |   2.68  |
-| Alt-Ergo 2.5.4 (BV)      |     2    |     2     |  15.09  |  45.39  |  30.24  |
-| CVC5 1.3.0               |  1637    |   1637    |   0.02  |  25.15  |   0.34  |
-| CVC5 1.3.0 (strings)     |    68    |     68    |   0.01  |  24.08  |   1.61  |
-| Z3 4.15.2 (noBV)         |     6    |     6     |   0.16  |   0.19  |   0.18  |
-
-> Note: counts are **proof attempts** (not unique goals). All attempts above succeeded.
 
 ### Environment & Reproducibility
 
@@ -54,6 +40,19 @@ why3 config list-provers
 alt-ergo --version
 cvc5 --version
 z3 --version
+```
 
+**Proof automation.**  
+All goals are proved and fully replayable. Proofs are **semi-automatic**: most obligations close after standard Why3 transformations (e.g., `unfold`, `split_goal_full`/`split_all_full`, and occasional `clear_but`), after which SMT backends (Alt-Ergo, CVC5, Z3) discharge the resulting subgoals. The applied transformations and solver calls are recorded in `why3session.xml`, so `why3 replay` reproduces everything deterministically.
 
+**Provers session statistics** (attempts, successes, and time in seconds):
 
+| Prover                   | Attempts | Successes | Min (s) | Max (s) | Avg (s) |
+|--------------------------|:--------:|:---------:|--------:|--------:|--------:|
+| Alt-Ergo 2.5.4           |   147    |    147    |   0.01  |  81.61  |   2.68  |
+| Alt-Ergo 2.5.4 (BV)      |     2    |     2     |  15.09  |  45.39  |  30.24  |
+| CVC5 1.3.0               |  1637    |   1637    |   0.02  |  25.15  |   0.34  |
+| CVC5 1.3.0 (strings)     |    68    |     68    |   0.01  |  24.08  |   1.61  |
+| Z3 4.15.2 (noBV)         |     6    |     6     |   0.16  |   0.19  |   0.18  |
+
+> Note: counts are **proof attempts** (not unique goals). All attempts above succeeded.
