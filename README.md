@@ -43,7 +43,8 @@ z3 --version
 ```
 
 **Proof automation.**  
-All goals are proved and fully replayable. Proofs are **semi-automatic**: most obligations close after standard Why3 transformations (e.g., `unfold`, `split_goal_full`/`split_all_full`, and occasional `clear_but`), after which SMT backends (Alt-Ergo, CVC5, Z3) discharge the resulting subgoals. The applied transformations and solver calls are recorded in `why3session.xml`, so `why3 replay` reproduces everything deterministically.
+All goals are proved and fully replayable. Proofs are **semi-automatic**: most obligations close after standard Why3 transformations (e.g., `unfold`, `split_goal_full`/`split_all_full`, and occasional `clear_but`), after which SMT backends (Alt-Ergo, CVC5, Z3) discharge the resulting subgoals. The applied transformations and solver calls are recorded in `why3session.xml`, so `why3 replay why3session.xml` reproduces everything deterministically.
+> Note: `why3session.xml`and `why3shapes.gz` must be in the same directory in order to replay the proof.
 
 **Provers session statistics** (attempts, successes, and time in seconds):
 
