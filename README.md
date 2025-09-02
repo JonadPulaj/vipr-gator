@@ -43,7 +43,7 @@ why3 --version
 why3 config list-provers
 
 # Clone and enter the repo
-git clone https://github.com/JonadPulaj/vipr-gator vipr-gator
+git clone https://github.com/JonadPulaj/vipr-gator 
 cd vipr-gator
 
 # Replay all proofs deterministically
