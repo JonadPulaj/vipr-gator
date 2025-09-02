@@ -4,9 +4,13 @@ A [Why3](https://www.why3.org/) formalization of the VIPR certificate checker fr
 
 The development formalizes VIPR certificates and their rules (feasibility, domination, rounding, disjunction/unsplitting, and per-reason derivations), and defines **semantic** (`valid_*`) and **proof-oriented** (`phi_*`) predicates that we prove **equivalent**. Our main theorem shows that for any well-formed certificate (`is_cert`), `valid cert ↔ phi cert`. 
 
-**Scope.** The proofs cover the *core logical correctness* of the checker rules. Implementation aspects such as parsing, file I/O, and CLI plumbing are *currently not* modeled.
+**Scope.** 
+The proofs cover the *core logical correctness* of the checker rules. Implementation aspects such as parsing, file I/O, and CLI plumbing are *currently not* modeled.
 
-## What’s in this repo
+**Relation to the paper.**  
+This formalization closely follows the proofs in the paper: informal arguments are mechanized as Why3 lemmas or goals. The per-component results (feasibility, solution bounds, domination, rounding, disjunction/unsplitting, and per-reason derivations) are mirrored one-to-one via lemmas such as `LemmaFEAS`, `LemmaSOL`, `LemmaDOM`, `LemmaDIS`, `LemmaLin`, `LemmaRND`, `LemmaUNS`, and the aggregated `LemmaDER`. The main equivalence result is captured as `MainTheorem` (`is_cert cert -> valid cert <-> phi cert`).
+
+## Repo contents
 
 - **`viper_cert.why`** — main development:
   - Certificate model: `VIPRCertificate`
@@ -34,20 +38,23 @@ All goals are proved and fully replayable. Proofs are **semi-automatic**: most o
 
 > Note: counts are **proof attempts** (not unique goals). All attempts above succeeded.
 
+### Environment & Reproducibility
 
-**Relation to the paper.**  
-This formalization closely follows the proofs in the paper: informal arguments are mechanized as Why3 lemmas or goals. The per-component results (feasibility, solution bounds, domination, rounding, disjunction/unsplitting, and per-reason derivations) are mirrored one-to-one via lemmas such as `LemmaFEAS`, `LemmaSOL`, `LemmaDOM`, `LemmaDIS`, `LemmaLin`, `LemmaRND`, `LemmaUNS`, and the aggregated `LemmaDER`. 
-The main equivalence result is captured as `MainTheorem` (`is_cert cert -> valid cert <-> phi cert`).
+The formalization is OS-independent, but **proof replay depends on the toolchain** (Why3 and SMT solver versions, options, and resource limits). We provide a known-good setup and the Why3 session so results are reproducible with the same environment.
+
+Known-good setup:
+- [Why3](https://www.why3.org/doc/install.html): 1.6.0
+- Provers: Alt-Ergo 2.5.4, Alt-Ergo 2.5.4 (BV), CVC5 1.3.0, CVC5 1.3.0 (strings), Z3 4.15.2 (noBV)
+- Machine: MacBook Pro, Apple M1 Max, 64 GB RAM, macOS Sequoia 15.5
+
+Check your setup:
+```bash
+why3 --version
+why3 config --detect
+why3 --list-provers
+alt-ergo --version
+cvc5 --version
+z3 --version
 
 
 
-
-
-## Requirements
-
-- [Why3](https://www.why3.org/doc/install.html)
-- At least one SMT solver: Z3, CVC5, or Alt-Ergo
-- If you want to replay the proof provided here you will
-  need Z3, Z3 (noBV), CVC5, CVC5 (strings), and
-  Alt-Ergo (BV). See session file for more specifics. Time limits may need to be 
-  adjusted based on your machine set-up. 
