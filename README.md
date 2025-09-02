@@ -1,9 +1,16 @@
 # vipr-gator — Why3 formalization
 
-A [Why3](https://www.why3.org/) formalization of the checker for VIPR certificates in [Satisfiability Modulo Theories for Verifying MILP
-Certificates](https://arxiv.org/pdf/2312.10420). Our formalization closely follows the paper above in modelling certificate validity/correctness by defining semantic and proof-oriented 
-predicates that are proven equivalent. [Why3](why3.org) discharges all proof obligations thus formally verifying 
-the algorithmic correcteness of the proposed checker.
+A [Why3](https://www.why3.org/) formalization of the VIPR certificate checker from the paper [*“Satisfiability Modulo Theories for Verifying MILP
+Certificates”*](https://arxiv.org/pdf/2312.10420).  
+The development models VIPR certificates and their rules (feasibility, domination, rounding, disjunction/unsplitting, and per-reason derivations), and defines **semantic** (`valid_*`) and **proof-oriented** (`phi_*`) predicates that we prove **equivalent**. Our main theorem shows that for any well-formed certificate (`is_cert`), `valid cert ↔ phi cert`. All proof obligations are discharged by Why3, and the repository includes the session files so results are **fully reproducible** via `why3 replay`.
+
+**Scope.** The proofs cover the *core logical correctness* of the checker rules. Implementation aspects such as parsing, file I/O, and CLI plumbing are currently *not* modeled.
+
+**Relation to the paper.**  
+This formalization closely follows the proofs in the paper: informal arguments are mechanized as Why3 lemmas or goals. The per-component results (feasibility, solution bounds, domination, rounding, disjunction/unsplitting, and per-reason derivations) are mirrored one-to-one via lemmas such as `LemmaFEAS`, `LemmaSOL`, `LemmaDOM`, `LemmaDIS`, `LemmaLin`, `LemmaRND`, `LemmaUNS`, and the aggregated `LemmaDER`. 
+The main equivalence result is captured as `MainTheorem` (`is_cert cert -> valid cert <-> phi cert`).
+
+
 ## What’s in this repo
 
 - **`viper_cert.why`** — main development:
