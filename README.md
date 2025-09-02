@@ -24,7 +24,8 @@ This formalization closely follows the proofs in the paper: informal arguments a
 - **`why3shapes.gz`** — shape information to keep session mapping stable.
 - **`viper_cert_trimmed.mlw`** — pretty print version, no helper predicates/lemmas.
 
-**Readibility and Surveyability.** `viper_cert.why` contains roughly 100 lemmas, the majority of which are helper lemmas that guide [Why3](https://www.why3.org/) and do not need to be read. To improve readability we include `viper_cert_trimmed.mlw` which does not contain any predicates/lemmas that can be ignored. In `viper_cert.why` we clearly indicate the main lemmas with comments which help them stand out.
+**Readability & surveyability.**
+viper_cert.why contains ~100 lemmas; many are helper lemmas to guide Why3/SMT and can be skimmed. For an overview, use viper_cert_trimmed.mlw which omits the ignorable glue.
 
 ### Environment & Reproducibility
 
