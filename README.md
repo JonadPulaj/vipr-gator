@@ -1,4 +1,4 @@
-# vipr-gator — Why3 formalization
+## vipr-gator — Why3 formalization
 
 A [Why3](https://www.why3.org/) formalization of the VIPR certificate checker from the paper [*“SMT for Verifying MILP Certificates”*](https://arxiv.org/pdf/2312.10420). 
 
@@ -18,18 +18,18 @@ This formalization closely follows the proofs in the paper: informal arguments a
   - Semantic predicates: `VIPRValidity`
   - Spec-style predicates: `VIPRPredicate`
   - Main equivalence lemmas & helpers: `Main`
-- **`viper_cert.html`** — HTML rendering of above.
+- **`viper_cert.html`** — HTML rendering of the above.
 - **`why3session.xml`** — Why3 session (prover results, tasks).
 - **`why3session.html`** — HTML rendering of Why3 session.
 - **`why3shapes.gz`** — shape information to keep session mapping stable.
 - **`viper_cert_trimmed.mlw`** — pretty print version, no helper predicates/lemmas.
 
 **Readability & surveyability.**
-viper_cert.why contains ~100 lemmas; many are helper lemmas to guide Why3/SMT and can be skimmed. For an overview, use viper_cert_trimmed.mlw which omits the ignorable glue.
+`viper_cert.why` contains ~100 lemmas; ~90 are helper lemmas to guide [Why3](https://www.why3.org/) and can be skimmed, or ignored. For an overview, use `viper_cert_trimmed.mlw` which omits the ignorable glue.
 
 ### Environment & Reproducibility
 
-The formalization is OS-independent, but **proof replay depends on the toolchain** (Why3 and SMT solver versions, options, and resource limits). We provide a known-good setup and the Why3 session so results are reproducible with the same environment.
+The formalization is OS-independent, but **proof replay depends on the toolchain** (Why3 and SMT solver versions, options, and resource limits). We provide a known-good setup and the [Why3](https://www.why3.org/) session so results are reproducible with the same environment.
 
 Known-good setup:
 - [Why3](https://www.why3.org/doc/install.html): 1.7.2
@@ -46,8 +46,8 @@ z3 --version
 ```
 
 **Proof automation.**  
-All goals are proved and fully replayable. Proofs are **semi-automatic**: most obligations close after standard Why3 transformations (e.g., `unfold`, `split_goal_full`/`split_all_full`/`split_goal_right`, and occasional `clear_but`, `introduce_premises`, `induction`), after which SMT backends (Alt-Ergo, CVC5, Z3) discharge the resulting subgoals. All the applied transformations and solver calls are fully captured in `why3session.xml`, so `why3 replay why3session.xml` reproduces everything deterministically.
-> Note: keep `why3session.xml`and `why3shapes.gz` in the same directory to correctly replay the proof. If in your current set-up running `why3 replay why3session.xml` fails to discharge all proof obligations you can launch the Why3 GUI by running `why3 ide viper_cert.why`. Then readjust time limits and manually replay the proof by relying on `why3session.html` for guidance on helpful transformations for failing goals.
+All goals are proved and fully replayable. Proofs are **semi-automatic**: most obligations close after standard [Why3 transformations](https://www.why3.org/doc/technical.html) (e.g., `unfold`, `split_goal_full`/`split_all_full`/`split_goal_right`, and occasional `clear_but`, `introduce_premises`, `induction`), after which SMT backends (Alt-Ergo, CVC5, Z3) discharge the resulting subgoals. All the applied transformations and solver calls are fully captured in `why3session.xml`, so `why3 replay why3session.xml` reproduces everything deterministically.
+> Note: keep `why3session.xml` and `why3shapes.gz` in the same directory to correctly replay the proof. If in your current set-up running `why3 replay why3session.xml` fails to discharge all proof obligations you can launch the Why3 GUI by running `why3 ide viper_cert.why`. Then readjust time limits and manually replay the proof by relying on `why3session.html` for guidance on helpful transformations for failing goals.
 
 **Provers session statistics** (attempts, successes, and time in seconds):
 
