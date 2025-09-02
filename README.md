@@ -22,6 +22,7 @@ This formalization closely follows the proofs in the paper: informal arguments a
 - **`why3session.xml`** — Why3 session (prover results, tasks).
 - **`why3session.html`** — HTML rendering of Why3 session.
 - **`why3shapes.gz`** — shape information to keep session mapping stable.
+- **`viper_cert_trimmed.mlw`** — pretty print version, no helper predicates/lemmas.
 
 
 ### Environment & Reproducibility
