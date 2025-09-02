@@ -12,6 +12,7 @@ the algorithmic correcteness of the proposed checker.
   - Semantic predicates: `VIPRValidity`
   - Spec-style predicates: `VIPRPredicate`
   - Main equivalence lemmas & helpers: `Main`
+- **`viper_cert.html`** — HTML rendering of above.
 - **`why3session.xml`** — Why3 session (prover results, tasks).
 - **`why3session.html`** — HTML rendering of Why3 session.
 - **`why3shapes.gz`** — shape information to keep session mapping stable.
