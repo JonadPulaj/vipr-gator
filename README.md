@@ -43,15 +43,14 @@ All goals are proved and fully replayable. Proofs are **semi-automatic**: most o
 The formalization is OS-independent, but **proof replay depends on the toolchain** (Why3 and SMT solver versions, options, and resource limits). We provide a known-good setup and the Why3 session so results are reproducible with the same environment.
 
 Known-good setup:
-- [Why3](https://www.why3.org/doc/install.html): 1.6.0
+- [Why3](https://www.why3.org/doc/install.html): 1.7.2
 - Provers: Alt-Ergo 2.5.4, Alt-Ergo 2.5.4 (BV), CVC5 1.3.0, CVC5 1.3.0 (strings), Z3 4.15.2 (noBV)
 - Machine: MacBook Pro, Apple M1 Max, 64 GB RAM, macOS Sequoia 15.5
 
 Check your setup:
 ```bash
 why3 --version
-why3 config --detect
-why3 --list-provers
+why3 config list-provers
 alt-ergo --version
 cvc5 --version
 z3 --version
