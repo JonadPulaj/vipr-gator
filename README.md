@@ -1,6 +1,6 @@
 # vipr-gator — Why3 formalization
 
-A [Why3](why3.org) formalization of the checker for VIPR certificates in [Satisfiability Modulo Theories for Verifying MILP
+A [Why3](https://www.why3.org/) formalization of the checker for VIPR certificates in [Satisfiability Modulo Theories for Verifying MILP
 Certificates](https://arxiv.org/pdf/2312.10420). Our formalization closely follows the paper above in modelling certificate validity/correctness by defining semantic and proof-oriented 
 predicates that are proven equivalent. [Why3](why3.org) discharges all proof obligations thus formally verifying 
 the algorithmic correcteness of the proposed checker.
