@@ -26,7 +26,7 @@ This formalization closely follows the proofs in the paper: informal arguments a
 - **`viper_cert_trimmed.mlw`** — pretty print version, no helper predicates/lemmas.
 
 **Readability & surveyability.**
-`viper_cert.why` contains ~100 lemmas; ~90 are helper lemmas to guide [Why3](https://www.why3.org/) and can be skimmed, or ignored. To ease reading, `viper_cert_trimmed.mlw` elides most auxiliary lemmas. In `viper_cert.why`, the main lemmas are marked with conspicuous comments.
+`viper_cert.why` contains 126 lemmas and 1 theorem; of which 114 are helper lemmas to guide [Why3](https://www.why3.org/) and can be skimmed, or ignored. To ease reading, `viper_cert_trimmed.mlw` elides most auxiliary lemmas. In `viper_cert.why`, the main lemmas and theorem are marked with conspicuous comments.
 
 ### Environment & Reproducibility
 
@@ -34,7 +34,7 @@ The formalization is OS-independent, but **proof replay depends on the toolchain
 
 Known-good setup:
 - [Why3](https://www.why3.org/doc/install.html): 1.7.2
-- Provers: Alt-Ergo 2.5.4, Alt-Ergo 2.5.4 (BV), CVC5 1.3.0, CVC5 1.3.0 (strings), Z3 4.15.2 (noBV)
+- Provers: Alt-Ergo 2.5.4, Alt-Ergo 2.5.4 (BV), Alt-Ergo 2.5.4 (counterexamples), CVC5 1.3.0, CVC5 1.3.0 (counterexamples), CVC5 1.3.0 (strings), Z3 4.15.2 (noBV)
 - Machine: MacBook Pro, Apple M1 Max, 64 GB RAM, macOS Sequoia 15.5
 
 Check your setup, get the repo and replay proof (troubleshooting if needed):
@@ -59,12 +59,14 @@ All goals are proved and fully replayable. Proofs are **semi-automatic**: most o
 
 **Provers session statistics** (attempts, successes, and time in seconds):
 
-| Prover                   | Attempts | Successes | Min (s) | Max (s) | Avg (s) |
-|--------------------------|:--------:|:---------:|--------:|--------:|--------:|
-| Alt-Ergo 2.5.4           |   147    |    147    |   0.01  |  81.61  |   2.68  |
-| Alt-Ergo 2.5.4 (BV)      |     2    |     2     |  15.09  |  45.39  |  30.24  |
-| CVC5 1.3.0               |  1637    |   1637    |   0.02  |  25.15  |   0.34  |
-| CVC5 1.3.0 (strings)     |    68    |     68    |   0.01  |  24.08  |   1.61  |
-| Z3 4.15.2 (noBV)         |     6    |     6     |   0.16  |   0.19  |   0.18  |
+| Prover                           | Attempts | Successes | Min (s) | Max (s) | Avg (s) |
+| -------------------------------- | :------: | :-------: | ------: | ------: | ------: |
+| Alt-Ergo 2.5.4                   |    161   |    161    |    0.01 |  335.85 |    9.33 |
+| Alt-Ergo 2.5.4 (BV)              |     7    |     7     |    0.02 |   67.07 |   21.68 |
+| Alt-Ergo 2.5.4 (counterexamples) |     1    |     1     |    3.42 |    3.42 |    3.42 |
+| CVC5 1.3.0                       |   1035   |    1035   |    0.01 |  229.71 |    1.57 |
+| CVC5 1.3.0 (counterexamples)     |     1    |     1     |    0.13 |    0.13 |    0.13 |
+| CVC5 1.3.0 (strings)             |    63    |     63    |    0.01 |  104.10 |    2.22 |
+| Z3 4.15.2 (noBV)                 |     2    |     2     |    0.25 |    1.94 |    1.10 |
 
 > Note: counts are **proof attempts** (not unique goals). All attempts above succeeded.
