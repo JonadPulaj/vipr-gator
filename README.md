@@ -35,8 +35,7 @@ The formalization is OS-independent, but **proof replay depends on the toolchain
 Known-good setup:
 - [Why3](https://www.why3.org/doc/install.html): 1.7.2
 - Provers: Alt-Ergo 2.5.4, Alt-Ergo 2.5.4 (BV), Alt-Ergo 2.5.4 (counterexamples), CVC5 1.3.0, CVC5 1.3.0 (counterexamples), CVC5 1.3.0 (strings), Z3 4.15.2 (noBV)
-- Machine: MacBook Pro, Apple M1 Max, 64 GB RAM, macOS Sequoia 15.5
-
+- Hardware/OS: MacBook Pro (MacBookPro18,2), Apple M1 Max, 10-core CPU (8P+2E), 64 GB RAM, macOS Sequoia 15.5; Firmware/Loader 11881.121.1.
 Check your setup, get the repo and replay proof (troubleshooting if needed):
 ```bash
 why3 --version
