@@ -19,9 +19,9 @@ This formalization closely follows the proofs in the paper: informal arguments a
   - Semantic predicates: `VIPRValidity`
   - Spec-style predicates: `VIPRPredicate`
   - Main equivalence lemmas & helpers: `Main`
-- **`viper_cert.html`** — HTML rendering of the above.
-- **`why3session.xml`** — Why3 session (prover results, tasks).
-- **`why3session.html`** — HTML rendering of Why3 session.
+- **`viper_cert.html`** — HTML rendering of the above (download to view).
+- **`why3session.xml`** — Why3 session (prover results, tasks, times).
+- **`why3session.html`** — HTML rendering of Why3 session (download to view).
 - **`why3shapes.gz`** — shape information to keep session mapping stable.
 - **`viper_cert_trimmed.mlw`** — pretty print version, no helper predicates/lemmas.
 
