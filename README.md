@@ -26,7 +26,7 @@ This formalization closely follows the proofs in the paper: informal arguments a
 - **`viper_cert_trimmed.mlw`** — pretty print version, no helper predicates/lemmas.
 
 **Readability & surveyability.**
-`viper_cert.why` contains 126 lemmas and 1 theorem; of which 114 are helper lemmas to guide [Why3](https://www.why3.org/) and can be skimmed, or ignored. To ease reading, `viper_cert_trimmed.mlw` elides most auxiliary lemmas. In `viper_cert.why`, the main lemmas and theorem are marked with conspicuous comments.
+`viper_cert.why` contains 130 lemmas and 1 theorem; of which 118 are helper lemmas to guide [Why3](https://www.why3.org/) and can be skimmed, or ignored. To ease reading, `viper_cert_trimmed.mlw` elides most auxiliary lemmas. In `viper_cert.why`, the main lemmas and theorem are marked with conspicuous comments.
 
 ### Environment & Reproducibility
 
