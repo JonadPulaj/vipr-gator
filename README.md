@@ -46,10 +46,10 @@ why3 config list-provers
 git clone https://github.com/JonadPulaj/vipr-gator 
 cd vipr-gator
 
-# Replay all proofs deterministically
+# Replay all proofs 
 why3 replay why3session.xml
 
-# (If something fails in your environment)
+# Launches IDE and proof manager
 why3 ide viper_cert.why
 
 ```
