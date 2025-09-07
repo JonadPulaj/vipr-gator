@@ -63,12 +63,13 @@ All goals are proved and fully replayable. Proofs are **semi-automatic**: most o
 
 | Prover                           | Attempts | Successes | Min (s) | Max (s) | Avg (s) |
 | -------------------------------- | :------: | :-------: | ------: | ------: | ------: |
-| Alt-Ergo 2.5.4                   |    161   |    161    |    0.01 |  335.85 |    9.33 |
-| Alt-Ergo 2.5.4 (BV)              |     7    |     7     |    0.02 |   67.07 |   21.68 |
-| Alt-Ergo 2.5.4 (counterexamples) |     1    |     1     |    3.42 |    3.42 |    3.42 |
-| CVC5 1.3.0                       |   1035   |    1035   |    0.01 |  229.71 |    1.57 |
+| Alt-Ergo 2.5.4                   |    174   |    174    |    0.01 |   53.58 |    3.33 |
+| Alt-Ergo 2.5.4 (BV)              |     6    |     6     |    0.02 |   40.62 |   11.98 |
+| Alt-Ergo 2.5.4 (counterexamples) |     1    |     1     |    4.42 |    4.42 |    4.42 |
+| CVC5 1.3.0                       |    820   |    820    |    0.02 |  229.59 |    1.87 |
 | CVC5 1.3.0 (counterexamples)     |     1    |     1     |    0.13 |    0.13 |    0.13 |
-| CVC5 1.3.0 (strings)             |    63    |     63    |    0.01 |  104.10 |    2.22 |
-| Z3 4.15.2 (noBV)                 |     2    |     2     |    0.25 |    1.94 |    1.10 |
+| CVC5 1.3.0 (strings)             |    62    |     62    |    0.01 |  122.06 |    2.44 |
+| Z3 4.15.2 (noBV)                 |     4    |     4     |    0.18 |    1.94 |    0.64 |
+
 
 > Note: counts are **proof attempts** (not unique goals). All attempts above succeeded.
