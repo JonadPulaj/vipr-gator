@@ -907,7 +907,7 @@ theory Main
     
   lemma OtherASM_Helper_Other_Other_X:
   forall cert: certificate, k:int.
-    (*let k_total = Int.(+) k m in*)
+    
     is_cert cert /\ in_range k (Int.(-)d m) /\ (forall j: int. in_range j k -> valid_DER_k cert j) /\ valid_DER_k cert k ->
     (forall j:int. mem j cert.cDER[k].a_set -> Int.(<=) (Int.(-) j m) k)  
     
@@ -1236,6 +1236,8 @@ theory Main
     (forall j: int. 0 <= j < k -> valid_DER_k cert j) ->
     valid_DER_k cert k -> phi_DER_k cert k 
         
+        
+        
   lemma Other_Direction_Phi:	
   forall cert: certificate, k:int, weights: array real.
   
@@ -1250,7 +1252,9 @@ theory Main
          mem j cert.cDER[Int.(-) i m].a_set)
         /\
         (forall i:int. weights[i] <> 0.0 /\ Int.(<=) m i /\ Int.(<) i total_k ->
-        forall j:int. mem j cert.cDER[Int.(-) i m].a_set -> mem j dc.a_set) )        
+        forall j:int. mem j cert.cDER[Int.(-) i m].a_set -> mem j dc.a_set) )  
+        
+              
    
   lemma Other_Direction_Phi_Val:	
   forall cert: certificate, k:int, weights: array real.
@@ -1264,6 +1268,7 @@ theory Main
         /\ (forall i:int. in_range i d /\ weights[i] <> 0.0 -> Int.(<) i total_k) /\ phi_ASM cert k ->  
         val_ASM cert k
         
+           
            
   lemma LemmaRND_OtherWay_Next_Check:
   forall cert:certificate, k:int, weights: array real.
@@ -1845,19 +1850,18 @@ theory Main
         )
         ) /\ phi_RND cert gen_con.lhs all_zero /\ (forall i:int. in_range i d /\ weights[i] <> 0.0 -> Int.(<) i total_k) /\ phi_ASM cert k
         
-        
-       
-       
-  lemma LemmaDER_helperRND_helper_helper:
+
+
+  lemma LemmaDER_helperRND_helper_faster:
   forall cert:certificate, k:int, weights: array real.
-  
+    
     let total_k = Int.(+) k m in
     let dc = cert.cDER[k] in
     let sgn_prod =
     fun i -> weights[i] *. (from_int (sign_to_int (get_constraint cert i).s)) in
     
         let all_nonneg : bool = forall i: int. in_range i d -> sgn_prod i >=. 0.0 in
-        let all_zero   : bool = forall i: int. in_range i d -> sgn_prod i = 0.0 in
+      
         let all_nonpos : bool = forall i: int. in_range i d -> sgn_prod i <=. 0.0 in
         
     let gen_con : generalized_constraint = get_lin_comb cert weights in 
@@ -1865,7 +1869,7 @@ theory Main
         is_cert cert /\ cert.cDER[k].rsn = Rnd
         /\ dc.data = D_lin_comb weights /\ (0 <= k < d - m) /\ (forall i:int. in_range i d /\ weights[i] <> 0.0 -> Int.(<) i total_k) /\
         (forall j: int. 0 <= j < k -> valid_DER_k cert j) /\
-        valid_DER_k cert k /\ val_ASM cert k -> 
+        (rnd_gen_con_dom_con cert (get_lin_comb cert weights) dc.con) /\ val_ASM cert k ->
         (
         (
         (forall j: int. in_range j n -> gen_con.lhs[j] = 0.0) /\ 
@@ -1879,9 +1883,144 @@ theory Main
           if dc.con.s = Geq then (all_nonneg /\ (from_int (ceil gen_con.rhs)) >=. dc.con.b) else
              (all_nonpos /\ (from_int (floor gen_con.rhs)) <=. dc.con.b))
         )
-        ) /\ phi_RND cert gen_con.lhs all_zero /\ (forall i:int. in_range i d /\ weights[i] <> 0.0 -> Int.(<) i total_k) /\ phi_ASM cert k
+        ) 
+     
+     
+        
+  lemma LemmaDER_helperRND_helper_intermed:
+  forall cert:certificate, k:int, weights: array real.
+    
+    let total_k = Int.(+) k m in
+    let dc = cert.cDER[k] in
+       
+        is_cert cert /\ cert.cDER[k].rsn = Rnd
+        /\ dc.data = D_lin_comb weights /\ (0 <= k < d - m) /\ (forall i:int. in_range i d /\ weights[i] <> 0.0 -> Int.(<) i total_k) /\
+        (forall j: int. 0 <= j < k -> valid_DER_k cert j) /\
+        valid_DER_k cert k -> (forall i:int. in_range i d /\ weights[i] <> 0.0 -> Int.(<) i total_k) 
+        /\ (rnd_gen_con_dom_con cert (get_lin_comb cert weights) dc.con) /\ val_ASM cert k
+        
+   
+        
+  lemma LemmaDER_helperRND_helper_faster_again:
+  forall cert:certificate, k:int, weights: array real.
+    
+    let total_k = Int.(+) k m in
+    let dc = cert.cDER[k] in
+    let sgn_prod =
+    fun i -> weights[i] *. (from_int (sign_to_int (get_constraint cert i).s)) in
+    
+        let all_nonneg : bool = forall i: int. in_range i d -> sgn_prod i >=. 0.0 in
+      
+        let all_nonpos : bool = forall i: int. in_range i d -> sgn_prod i <=. 0.0 in
+        
+    let gen_con : generalized_constraint = get_lin_comb cert weights in 
+    
+        is_cert cert /\ cert.cDER[k].rsn = Rnd
+        /\ dc.data = D_lin_comb weights /\ (0 <= k < d - m) /\ (forall i:int. in_range i d /\ weights[i] <> 0.0 -> Int.(<) i total_k) /\
+        (forall j: int. 0 <= j < k -> valid_DER_k cert j) /\
+        (rnd_gen_con_dom_con cert (get_lin_comb cert weights) dc.con) ->
+        (
+        (
+        (forall j: int. in_range j n -> gen_con.lhs[j] = 0.0) /\ 
+        (if all_nonneg then gen_con.rhs >. 0.0 else 
+          if all_nonpos then gen_con.rhs <. 0.0 else false)
+        )
+        \/
+        (
+        (forall j: int. in_range j n -> gen_con.lhs[j] = dc.con.a[j]) /\ 
+        (if dc.con.s = Eq then false else 
+          if dc.con.s = Geq then (all_nonneg /\ (from_int (ceil gen_con.rhs)) >=. dc.con.b) else
+             (all_nonpos /\ (from_int (floor gen_con.rhs)) <=. dc.con.b))
+        )
+        )         
         
   
+  
+  lemma LemmaDER_helperRND_helper_intermed_again:
+  forall cert:certificate, k:int, weights: array real.
+    
+    let total_k = Int.(+) k m in
+    let dc = cert.cDER[k] in
+       
+        is_cert cert /\ cert.cDER[k].rsn = Rnd
+        /\ dc.data = D_lin_comb weights /\ (0 <= k < d - m) /\ (forall i:int. in_range i d /\ weights[i] <> 0.0 -> Int.(<) i total_k) /\
+        (forall j: int. 0 <= j < k -> valid_DER_k cert j) /\
+        (forall i:int. in_range i d /\ weights[i] <> 0.0 -> Int.(<) i total_k) 
+        /\ (rnd_gen_con_dom_con cert (get_lin_comb cert weights) dc.con) /\ val_ASM cert k   -> valid_DER_k cert k    
+        
+   
+   
+        
+  lemma LemmaDER_helperRND_helper_faster_again_val:
+  forall cert:certificate, k:int, weights: array real.
+    
+    let total_k = Int.(+) k m in
+    let dc = cert.cDER[k] in
+    let sgn_prod =
+    fun i -> weights[i] *. (from_int (sign_to_int (get_constraint cert i).s)) in
+    
+        let all_nonneg : bool = forall i: int. in_range i d -> sgn_prod i >=. 0.0 in
+      
+        let all_nonpos : bool = forall i: int. in_range i d -> sgn_prod i <=. 0.0 in
+        
+    let gen_con : generalized_constraint = get_lin_comb cert weights in 
+    
+        is_cert cert /\ cert.cDER[k].rsn = Rnd
+        /\ dc.data = D_lin_comb weights /\ (0 <= k < d - m) /\ (forall i:int. in_range i d /\ weights[i] <> 0.0 -> Int.(<) i total_k) /\
+        (forall j: int. 0 <= j < k -> valid_DER_k cert j) /\
+        (rnd_gen_con_dom_con cert (get_lin_comb cert weights) dc.con) /\ valid_DER_k cert k  ->
+        (
+        (
+        (forall j: int. in_range j n -> gen_con.lhs[j] = 0.0) /\ 
+        (if all_nonneg then gen_con.rhs >. 0.0 else 
+          if all_nonpos then gen_con.rhs <. 0.0 else false)
+        )
+        \/
+        (
+        (forall j: int. in_range j n -> gen_con.lhs[j] = dc.con.a[j]) /\ 
+        (if dc.con.s = Eq then false else 
+          if dc.con.s = Geq then (all_nonneg /\ (from_int (ceil gen_con.rhs)) >=. dc.con.b) else
+             (all_nonpos /\ (from_int (floor gen_con.rhs)) <=. dc.con.b))
+        )
+        )    
+ 
+ 
+        
+  lemma LemmaDER_helperRND_helper_faster_faster:
+  forall cert:certificate, k:int, weights: array real.
+    let total_k = Int.(+) k m in
+    let dc = cert.cDER[k] in
+    let sgn_prod =
+    fun i -> weights[i] *. (from_int (sign_to_int (get_constraint cert i).s)) in
+    
+        let all_nonneg : bool = forall i: int. in_range i d -> sgn_prod i >=. 0.0 in
+        let all_nonpos : bool = forall i: int. in_range i d -> sgn_prod i <=. 0.0 in
+        
+    let gen_con : generalized_constraint = get_lin_comb cert weights in 
+    
+        is_cert cert /\ cert.cDER[k].rsn = Rnd
+        /\ dc.data = D_lin_comb weights /\ (0 <= k < d - m) /\
+        (forall j: int. 0 <= j < k -> valid_DER_k cert j) /\
+        valid_DER_k cert k -> (forall i:int. in_range i d /\ weights[i] <> 0.0 -> Int.(<) i total_k) /\
+        (rnd_gen_con_dom_con cert (get_lin_comb cert weights) dc.con) /\ val_ASM cert k ->
+        
+        (
+        (
+        (forall j: int. in_range j n -> gen_con.lhs[j] = 0.0) /\ 
+        (if all_nonneg then gen_con.rhs >. 0.0 else 
+          if all_nonpos then gen_con.rhs <. 0.0 else false)
+        )
+        \/
+        (
+        (forall j: int. in_range j n -> gen_con.lhs[j] = dc.con.a[j]) /\ 
+        (if dc.con.s = Eq then false else 
+          if dc.con.s = Geq then (all_nonneg /\ (from_int (ceil gen_con.rhs)) >=. dc.con.b) else
+             (all_nonpos /\ (from_int (floor gen_con.rhs)) <=. dc.con.b))
+        )
+        ) 
+        
+        
+       
    
   lemma LemmaDER_helperRnd:
   forall cert: certificate, k:int.
@@ -1889,10 +2028,12 @@ theory Main
     -> (forall j: int. 0 <= j < k -> valid_DER_k cert j) 
     -> valid_DER_k cert k -> phi_DER_k cert k
     
+    
   lemma LemmaDER_helperRndAltogether:
   forall cert: certificate, k:int.
     is_cert cert -> 0 <= k < d - m -> (cert.cDER[k].rsn = Asm \/ cert.cDER[k].rsn = Rnd \/ cert.cDER[k].rsn = Uns \/ cert.cDER[k].rsn = Lin \/ cert.cDER[k].rsn = Sol) 
     -> (forall j: int. 0 <= j < k -> valid_DER_k cert j) -> valid_DER_k cert k -> phi_DER_k cert k
+    
     
   lemma LemmaDER_helperRndAltogether_Altogether:
   forall cert: certificate, k:int.
@@ -1924,6 +2065,7 @@ theory Main
      
     
   lemma LemmaDER_forward: forall cert: certificate. is_cert cert -> (valid_DER cert -> phi_DER cert)
+  
   
   lemma LemmaDER_helperASM_OtherDirection:
   forall cert: certificate, k:int.
@@ -2380,12 +2522,14 @@ theory Main
     is_cert cert -> 0 <= k < d - m 
     -> (cert.cDER[k].rsn = Asm \/ cert.cDER[k].rsn = Rnd \/ cert.cDER[k].rsn = Uns \/ cert.cDER[k].rsn = Lin \/ cert.cDER[k].rsn = Sol) 
     ->  (forall j: int. in_range j k -> phi_DER_k cert j) -> phi_DER_k cert k -> valid_DER_k cert k  
+    
   
   lemma LemmaDER_helperRnd_OtherDirectionFinal:
   forall cert: certificate, k: int.
     is_cert cert -> 0 <= k < d - m 
     -> (forall j: int. in_range j k -> phi_DER_k cert j) 
     -> phi_DER_k cert k -> valid_DER_k cert k 
+    
     
   lemma LemmaDER_HelperOtherDirection:
   forall cert: certificate.
