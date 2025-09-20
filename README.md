@@ -6,7 +6,7 @@ A [Why3](https://www.why3.org/) formalization of the VIPR certificate checker fr
 The development formalizes VIPR certificates and their rules (feasibility, domination, rounding, disjunction/unsplitting, and per-reason derivations), and defines **semantic** (`valid_*`) and **proof-oriented** (`phi_*`) predicates that we prove **equivalent**. Our main theorem shows that for any well-formed certificate (`is_cert`), `valid cert ↔ phi cert`. 
 
 **Scope.** 
-The proofs cover the *core logical correctness* of the checker rules. Implementation aspects such as parsing, file I/O, and CLI plumbing are *currently not* modeled.
+The proofs cover the *core logical correctness* of the checker rules. The formalization *does not* contain any non-ghost code and implementation aspects such as parsing, file I/O, and CLI plumbing are *currently not* modeled.
 
 **Relation to the paper.**  
 This formalization closely follows the proofs in the paper: informal arguments are mechanized as Why3 lemmas or goals. The per-component results (feasibility, solution bounds, domination, rounding, disjunction/unsplitting, and per-reason derivations) are mirrored one-to-one via lemmas such as `LemmaFEAS`, `LemmaSOL`, `LemmaDOM`, `LemmaDIS`, `LemmaLin`, `LemmaRND`, `LemmaUNS`, and the aggregated `LemmaDER`. The main equivalence result is captured as `MainTheorem` (`is_cert cert -> valid cert <-> phi cert`).
