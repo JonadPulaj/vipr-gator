@@ -59,17 +59,15 @@ why3 ide viper_cert.why
 All goals are proved and fully replayable. Proofs are **semi-automatic**: most obligations close after standard [Why3 transformations](https://www.why3.org/doc/technical.html) (e.g., `unfold`, `split_goal_full`/`split_all_full`/`split_goal_right`, and occasional `clear_but`, `introduce_premises`, `induction`), after which SMT backends (Alt-Ergo, CVC5, Z3) discharge the resulting subgoals. All the applied transformations and solver calls are fully captured in `why3session.xml`, so calling `why3 replay why3session.xml` should reproduce everything (see note if this is not the case).
 > Note: keep `why3session.xml` and `why3shapes.gz` in the same directory to correctly replay the proof. If in your current set-up running `why3 replay why3session.xml` fails to discharge all proof obligations you can launch the Why3 GUI by running `why3 ide viper_cert.why`. Then readjust time limits and manually replay the proof by relying on `why3session.html` for guidance on helpful transformations for failing goals.
 
-**Provers session statistics** (attempts, successes, and time in seconds):
+| Prover               | Attempts | Successful |  Success % | Min (s) | Max (s) | Avg (s) |
+| :------------------- | -------: | ---------: | ---------: | ------: | ------: | ------: |
+| Alt-Ergo 2.5.4       |      250 |        250 |     100.0% |    0.01 |   21.27 |    1.10 |
+| Alt-Ergo 2.5.4 (BV)  |        6 |          6 |     100.0% |    0.02 |   13.18 |    2.42 |
+| CVC5 1.3.0           |      787 |        787 |     100.0% |    0.02 |   23.44 |    0.31 |
+| CVC5 1.3.0 (strings) |       54 |         54 |     100.0% |    0.01 |    2.57 |    0.22 |
+| Z3 4.15.2            |        1 |          1 |     100.0% |    0.04 |    0.04 |    0.04 |
+| Z3 4.15.2 (noBV)     |       10 |         10 |     100.0% |    0.10 |    7.58 |    1.32 |
 
-| Prover                           | Attempts | Successes | Min (s) | Max (s) | Avg (s) |
-| -------------------------------- | :------: | :-------: | ------: | ------: | ------: |
-| Alt-Ergo 2.5.4                   |    174   |    174    |    0.01 |   53.58 |    3.33 |
-| Alt-Ergo 2.5.4 (BV)              |     6    |     6     |    0.02 |   40.62 |   11.98 |
-| Alt-Ergo 2.5.4 (counterexamples) |     1    |     1     |    4.42 |    4.42 |    4.42 |
-| CVC5 1.3.0                       |    820   |    820    |    0.02 |  229.59 |    1.87 |
-| CVC5 1.3.0 (counterexamples)     |     1    |     1     |    0.13 |    0.13 |    0.13 |
-| CVC5 1.3.0 (strings)             |    62    |     62    |    0.01 |  122.06 |    2.44 |
-| Z3 4.15.2 (noBV)                 |     4    |     4     |    0.18 |    1.94 |    0.64 |
 
 
 > Note: counts are **proof attempts** (not unique goals). All attempts above succeeded.
